@@ -10,7 +10,7 @@ namespace ArcTouch.UpcomingMovies.Api.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string Overview { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
         public IEnumerable<int> GenreIds { get; set; }
         public string PosterPath { get; set; }
 

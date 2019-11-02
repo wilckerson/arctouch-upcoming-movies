@@ -106,7 +106,11 @@ namespace ArcTouch.UpcomingMovies.Api.Services
             movie.Title = jsonItem.Value<string>("title");
             movie.Overview = jsonItem.Value<string>("overview");
             movie.PosterPath = jsonItem.Value<string>("poster_path");
-            movie.ReleaseDate = jsonItem.Value<DateTime>("release_date");
+
+            if (!string.IsNullOrEmpty(jsonItem.Value<string>("release_date")))
+            {
+                movie.ReleaseDate = jsonItem.Value<DateTime>("release_date");
+            }
             
             if(jsonItem["genre_ids"] != null)
             {
