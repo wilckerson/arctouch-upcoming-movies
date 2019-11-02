@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ArcTouch.UpcomingMovies.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,10 @@ namespace ArcTouch.UpcomingMovies.Api
             {
                 configuration.RootPath = "ClientApp";
             });
+
+            services.AddSingleton<IMovieService>(new TheMovieDbService(
+               Configuration.GetSection("TheMovieDb").GetValue<string>("ApiKey")
+           ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +53,7 @@ namespace ArcTouch.UpcomingMovies.Api
             {
                 spa.Options.SourcePath = "ClientApp";
             });
+
         }
     }
 }
