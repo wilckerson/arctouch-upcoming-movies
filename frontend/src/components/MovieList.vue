@@ -10,8 +10,21 @@
 
     <div v-if="!loading">
       <div v-for="movieItem in paginatedMovieList.results" v-bind:key="'movieItem_'+movieItem.id">
-          <movie-list-item :movie-item="movieItem"></movie-list-item>
+        <movie-list-item :movie-item="movieItem"></movie-list-item>
       </div>
+    </div>
+
+    <!-- Pagination -->
+    <div>
+      <template v-for="(pageNumber,idx) in paginatedMovieList.totalPages">
+        <button
+          v-if="page != pageNumber"
+          v-bind:key="'page'+idx"
+          style="padding:4px 8px;"
+          @click="onChangePage(pageNumber)"
+        >{{pageNumber}}</button>
+        <span v-else v-bind:key="'page'+idx" style="padding:4px 8px;">{{pageNumber}}</span>
+      </template>
     </div>
   </div>
 </template>
@@ -36,7 +49,9 @@ export default {
   data() {
     return {
       loading: false,
-      paginatedMovieList: []
+      query: "",
+      page: 1,
+      paginatedMovieList: {}
     };
   },
 
@@ -45,13 +60,16 @@ export default {
   },
 
   methods: {
-    async populateMovies(query) {
+    async populateMovies() {
       try {
         this.loading = true;
 
-        var response = await axios.get(`${config.API_URL}/movie?query=${query || ""}`);
+        var response = await axios.get(
+          `${config.API_URL}/movie?query=${this.query || ""}&page=${this.page || ""}`
+        );
 
         this.paginatedMovieList = (response && response.data) || {};
+        //this.page = this.paginatedMovieList.page;
 
         this.loading = false;
       } catch (e) {
@@ -68,7 +86,16 @@ export default {
       }
     },
     onChangeSearch(query) {
-      this.populateMovies(query);
+      this.query = query;
+      this.page = 1;
+      this.populateMovies();
+    },
+    onChangePage(pageNumber) {
+      if (this.loading) {
+        return;
+      }
+      this.page = pageNumber;
+      this.populateMovies();
     }
   }
 };
