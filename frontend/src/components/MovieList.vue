@@ -10,23 +10,28 @@
 
     <div v-if="!loading">
       <div v-for="movieItem in paginatedMovieList.results" v-bind:key="'movieItem_'+movieItem.id">
-        <div>{{movieItem.title}}</div>
+          <movie-list-item :movie-item="movieItem"></movie-list-item>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+//External packages
 import axios from "axios";
 import Swal from "sweetalert2";
 
-import config from "../config";
-
+//Components
 import SearchBar from "./SearchBar";
+import MovieListItem from "./MovieListItem";
+
+//General references
+import config from "../config";
 
 export default {
   components: {
-    SearchBar
+    SearchBar,
+    MovieListItem
   },
   data() {
     return {
