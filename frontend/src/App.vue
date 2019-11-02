@@ -2,10 +2,8 @@
   <div id="app">
     <movie-list @selectMovie="onSelectMovie"></movie-list>
 
-    <simple-modal :show="showModalDetails" @hide="onHideModalDetails">
-      <div>
-        Conteúdo
-      </div>
+    <simple-modal :show="showModalDetails" @hide="onHideModalDetails"  >
+      <movie-details :movie-id="selectedMovieId"></movie-details>      
     </simple-modal>
   </div>
 </template>
@@ -14,22 +12,26 @@
 //Components
 import MovieList from "./components/MovieList.vue";
 import SimpleModal from "./components/SimpleModal.vue";
+import MovieDetails from "./components/MovieDetails.vue";
 
 export default {
   components: {
-    MovieList, SimpleModal
+    MovieList, SimpleModal, MovieDetails
   },
   data() {
     return {
-      showModalDetails: false
+      showModalDetails: false,
+      selectedMovieId: undefined
     };
   },
   methods: {
     onHideModalDetails() {
       this.showModalDetails = false;
+      this.selectedMovieId = undefined;
     },
-    onSelectMovie(){
+    onSelectMovie(movieItem){
       this.showModalDetails = true;
+      this.selectedMovieId = movieItem.id;
     }
   }
 };

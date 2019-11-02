@@ -2,7 +2,7 @@
   <!-- Modal background -->
   <div
     v-if="show"
-    style="width:100%; height:100%; background-color: rgba(0,0,0,0.5); position: absolute; top: 0; left:0;"
+    style="width:100%; height:100%; background-color: rgba(0,0,0,0.5); position: fixed; top: 0; left:0;"
   >
     <!-- Modal container -->
     <div
@@ -15,14 +15,14 @@
       >&times;</div>
 
       <!-- Modal content Slot -->
-      <slot></slot>
+      <slot :params="params"></slot>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["show"],
+  props: ["show", "params"],
   methods: {
     onHideModal() {
       this.$emit("hide");

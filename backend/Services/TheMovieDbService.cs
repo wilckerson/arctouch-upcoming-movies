@@ -141,6 +141,7 @@ namespace ArcTouch.UpcomingMovies.Api.Services
             {
                 //On movie details the genre has a different json structure
                 movie.GenreIds = jsonItem.Value<JArray>("genres").Select(item => item.Value<int>("id"));
+                movie.GenreNames = jsonItem.Value<JArray>("genres").Select(item => item.Value<string>("name"));
             }
 
             return movie;

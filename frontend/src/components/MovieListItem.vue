@@ -1,7 +1,7 @@
 <template>
   <div v-if="movieItem" style="margin-bottom: 12px;" @click="onClickMovie">
       <div
-      :style="'width:100px; height:161px; background-position: center center; background-size: cover; background-image: url('+getImagePath()+')'">
+      :style="'width:100px; height:161px; background-position: center center; background-size: cover; background-image: url('+helpers.getImagePathW200(movieItem.posterPath)+')'">
 
       </div>
     <div>{{movieItem.title}}</div>
@@ -12,15 +12,20 @@
         style="background-color: #eee; display:inline-block; margin-right:4px; padding:2px 4px; border-radius:2px;"
       >{{getGenre(genreId).name}}</span>
     </div>
-    <div v-if="movieItem.releaseDate">{{getReleaseDateDescription()}}</div>
+    <div v-if="movieItem.releaseDate">{{helpers.getReleaseDateDescription(movieItem.releaseDate)}}</div>
   </div>
 </template>
 
 <script>
-import moment from "moment";
+import helpers from "../helpers";
 
 export default {
   props: ["movieItem", "genreList"],
+  data(){
+    return {
+      helpers
+    }
+  },
   methods: {
     showGenre() {
       return (
@@ -33,16 +38,7 @@ export default {
     getGenre(id) {
       return (this.genreList || []).find(item => item.id == id) || {};
     },
-    getReleaseDateDescription() {
-      return moment(this.movieItem.releaseDate).format("MMMM D, YYYY");
-    },
-    getImagePath(){
-        if(!this.movieItem.posterPath){
-            return "/img/empty-poster-200.png";
-        }
-
-        return `https://image.tmdb.org/t/p/w200${this.movieItem.posterPath}`;
-    },
+    
     onClickMovie(){
         this.$emit('click', this.movieItem);
     }

@@ -4,7 +4,7 @@
 
     <search-bar @change="onChangeSearch"></search-bar>
 
-    <div v-if="loading" class="text-center">
+    <div v-if="loading">
       <h5>Loading...</h5>
     </div>
 
@@ -121,7 +121,6 @@ export default {
       this.populateMovies();
     },
     onSelectMovie(movieItem){
-        console.log("selectMovie", movieItem);
         this.$emit("selectMovie", movieItem);
     }
   }
