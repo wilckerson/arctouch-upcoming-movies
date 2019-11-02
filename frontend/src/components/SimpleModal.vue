@@ -6,7 +6,7 @@
   >
     <!-- Modal container -->
     <div
-      style="width:100%; max-width: 600px; min-height: 100px; background-color:white;margin: 60px auto 0px; position: relative;"
+      style="width:100%; max-width: 600px; min-height: 100px; background-color:white;margin: 60px auto 0px; position: relative; color:black;"
     >
       <!-- Modal close button -->
       <div
