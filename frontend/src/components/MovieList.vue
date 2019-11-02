@@ -8,9 +8,9 @@
       <h5>Loading...</h5>
     </div>
 
-    <div v-if="!loading">
+    <div v-if="!loading" style="margin-top: 12px;">
       <div v-for="movieItem in paginatedMovieList.results" v-bind:key="'movieItem_'+movieItem.id">
-        <movie-list-item :movie-item="movieItem"></movie-list-item>
+        <movie-list-item :movie-item="movieItem" :genre-list="genreList"></movie-list-item>
       </div>
     </div>
 
@@ -51,15 +51,39 @@ export default {
       loading: false,
       query: "",
       page: 1,
-      paginatedMovieList: {}
+      paginatedMovieList: {},
+      genreList: []
     };
   },
 
-  created() {
+  async created() {
+     await this.populateGenreList();
     this.populateMovies();
   },
 
   methods: {
+      async populateGenreList() {
+      try {
+        this.loading = true;
+
+        var response = await axios.get(`${config.API_URL}/movie/genres`);
+
+        this.genreList = (response && response.data) || [];
+
+        this.loading = false;
+      } catch (e) {
+        console.error(e);
+
+        this.loading = false;
+
+        Swal.fire({
+          type: "error",
+          title: "Something went wrong",
+          text:
+            "There was an error getting the genre list. Try again later or contact the support."
+        });
+      }
+    },
     async populateMovies() {
       try {
         this.loading = true;
@@ -69,7 +93,6 @@ export default {
         );
 
         this.paginatedMovieList = (response && response.data) || {};
-        //this.page = this.paginatedMovieList.page;
 
         this.loading = false;
       } catch (e) {

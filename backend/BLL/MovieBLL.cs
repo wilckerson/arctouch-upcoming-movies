@@ -35,5 +35,11 @@ namespace ArcTouch.UpcomingMovies.Api.BLL
             var result = await movieService.GetMovieDetails(id);
             return result;
         }
+
+        public async Task<IEnumerable<MovieGenre>> GetMovieGenres()
+        {
+            var result = await movieService.GetMovieGenres();
+            return result;
+        }
     }
 }

@@ -80,6 +80,27 @@ namespace ArcTouch.UpcomingMovies.Api.Services
             }
         }
 
+        public async Task<IEnumerable<MovieGenre>> GetMovieGenres()
+        {
+            using (HttpClient http = new HttpClient())
+            {
+                var response = await http.GetAsync($"{API_URL}/genre/movie/list?api_key={apiKey}");
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var erro = $"StatusCode:{response.StatusCode} Message: {response.ReasonPhrase} Response: {responseContent}";
+                    throw new Exception("Error on requesting themoviedb API to get movie genres list.", new Exception(erro));
+                }
+
+                var jsonResponse = JObject.Parse(responseContent);
+
+                var movieGenreList = ParseJsonToMovieGenreList(jsonResponse);
+
+                return movieGenreList;
+            }
+        }
+
         private PaginatedMovieList ParseJsonToPaginatedMovieList(JObject jsonResponse)
         {
             var paginatedMovieList = new PaginatedMovieList();
@@ -123,6 +144,30 @@ namespace ArcTouch.UpcomingMovies.Api.Services
             }
 
             return movie;
+        }
+
+        private MovieGenre ParseJsonToMovieGenre(JToken jsonItem)
+        {
+            var movieGenre = new MovieGenre();
+            movieGenre.Id = jsonItem.Value<int>("id");
+            movieGenre.Name = jsonItem.Value<string>("name");
+
+            return movieGenre;
+        }
+
+        private IEnumerable<MovieGenre> ParseJsonToMovieGenreList(JObject jsonResponse)
+        {
+            var movieGenreList = new List<MovieGenre>();
+
+            var results = jsonResponse.Value<JArray>("genres");
+            foreach (var jsonItem in results)
+            {
+                var movieGenre = ParseJsonToMovieGenre(jsonItem);
+
+                movieGenreList.Add(movieGenre);
+            }
+
+            return movieGenreList;
         }
     }
 }

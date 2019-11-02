@@ -11,5 +11,6 @@ namespace ArcTouch.UpcomingMovies.Api.Services
         Task<PaginatedMovieList> GetUpcomingMovies(int? page = null);
         Task<PaginatedMovieList> SearchMovies(string query, int? page = null);
         Task<Movie> GetMovieDetails(int id);
+        Task<IEnumerable<MovieGenre>> GetMovieGenres();
     }
 }

@@ -32,6 +32,22 @@ namespace ArcTouch.UpcomingMovies.Api.Controllers
             }
         }
 
+        
+
+        [HttpGet("genres")]
+        public async Task<IActionResult> GetMovieGenres()
+        {
+            try
+            {
+                var result = await movieBLL.GetMovieGenres();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMovieDetails(int id)
         {
@@ -40,7 +56,7 @@ namespace ArcTouch.UpcomingMovies.Api.Controllers
                 var result = await movieBLL.GetMovieDetails(id);
                 return Ok(result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
