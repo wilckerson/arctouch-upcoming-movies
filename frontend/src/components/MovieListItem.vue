@@ -1,5 +1,5 @@
 <template>
-  <div v-if="movieItem" style="margin-bottom: 12px;">
+  <div v-if="movieItem" style="margin-bottom: 12px;" @click="onClickMovie">
       <div
       :style="'width:100px; height:161px; background-position: center center; background-size: cover; background-image: url('+getImagePath()+')'">
 
@@ -42,6 +42,9 @@ export default {
         }
 
         return `https://image.tmdb.org/t/p/w200${this.movieItem.posterPath}`;
+    },
+    onClickMovie(){
+        this.$emit('click', this.movieItem);
     }
   }
 };

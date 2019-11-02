@@ -10,7 +10,7 @@
 
     <div v-if="!loading" style="margin-top: 12px;">
       <div v-for="movieItem in paginatedMovieList.results" v-bind:key="'movieItem_'+movieItem.id">
-        <movie-list-item :movie-item="movieItem" :genre-list="genreList"></movie-list-item>
+        <movie-list-item :movie-item="movieItem" :genre-list="genreList" @click="onSelectMovie"></movie-list-item>
       </div>
     </div>
 
@@ -119,6 +119,10 @@ export default {
       }
       this.page = pageNumber;
       this.populateMovies();
+    },
+    onSelectMovie(movieItem){
+        console.log("selectMovie", movieItem);
+        this.$emit("selectMovie", movieItem);
     }
   }
 };
