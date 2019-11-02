@@ -1,21 +1,55 @@
 <template>
   <div>
-    <h1>Movie List</h1>
+    
 
-    <search-bar @change="onChangeSearch"></search-bar>
-
-    <div v-if="loading">
-      <h5>Loading...</h5>
+    <!-- Search bar -->
+    <div class="searchbar-container pb-3">
+      <search-bar @change="onChangeSearch" placeholder="Search for a movie..."></search-bar>
     </div>
 
-    <div v-if="!loading" style="margin-top: 12px;">
-      <div v-for="movieItem in paginatedMovieList.results" v-bind:key="'movieItem_'+movieItem.id">
-        <movie-list-item :movie-item="movieItem" :genre-list="genreList" @click="onSelectMovie"></movie-list-item>
+    <!-- Loading -->
+    <div v-if="loading" class="text-center mt-5 mb-5">
+      <img src="/img/magnify-loading.svg" />
+      <div>Searching movies...</div>
+    </div>
+
+    <div v-if="!loading" class="mt-5">
+      <!-- Empty state -->
+      <div
+        v-if="paginatedMovieList && paginatedMovieList.results && paginatedMovieList.results.length == 0"
+        class="text-center"
+      >
+        <h5>No results</h5>
+        <div>There are no movies that matched your query.</div>
+      </div>
+      <!-- Movie list -->
+      <div class="row mt-3">
+        <div
+          v-for="movieItem in paginatedMovieList.results"
+          v-bind:key="'movieItem_'+movieItem.id"
+          class="col movie-item"
+        >
+          <movie-list-item :movie-item="movieItem" :genre-list="genreList" @click="onSelectMovie"></movie-list-item>
+        </div>
       </div>
     </div>
 
     <!-- Pagination -->
-    <div>
+   
+<paginate
+      :click-handler="onChangePage"
+      :page-count="paginatedMovieList.totalPages"
+      :hide-prev-next="true"
+      prev-text="Previous"
+      next-text="Next"
+      next-class="page-item"
+      prev-class="page-item"
+      page-class="page-item"
+      container-class="pagination justify-content-center"
+    ></paginate>
+   
+
+    <!-- <div>
       <template v-for="(pageNumber,idx) in paginatedMovieList.totalPages">
         <button
           v-if="page != pageNumber"
@@ -25,7 +59,7 @@
         >{{pageNumber}}</button>
         <span v-else v-bind:key="'page'+idx" style="padding:4px 8px;">{{pageNumber}}</span>
       </template>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -131,3 +165,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.searchbar-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.movie-item {
+  margin-bottom: 64px;
+}
+</style>

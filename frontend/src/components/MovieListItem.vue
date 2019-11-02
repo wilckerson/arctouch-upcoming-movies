@@ -1,16 +1,14 @@
 <template>
-  <div v-if="movieItem" style="margin-bottom: 12px;" @click="onClickMovie">
-      <div
-      :style="'width:100px; height:161px; background-position: center center; background-size: cover; background-image: url('+helpers.getImagePathW200(movieItem.posterPath)+')'">
-
-      </div>
-    <div>{{movieItem.title}}</div>
+  <div v-if="movieItem" >
+    <div
+    @click="onClickMovie"
+      class="movie-poster"
+      :style="'background-image: url('+helpers.getImagePathW200(movieItem.posterPath)+')'"
+    ></div>
+    <div class="mt-3 title">{{movieItem.title}}</div>
     <div v-if="showGenre()">
-      <span
-        v-for="genreId in movieItem.genreIds"
-        :key="'genre'+genreId"
-        style="background-color: #eee; display:inline-block; margin-right:4px; padding:2px 4px; border-radius:2px;"
-      >{{getGenre(genreId).name}}</span>
+      <div class="genre">{{getGenreDescription()}}</div>
+      
     </div>
     <div v-if="movieItem.releaseDate">{{helpers.getReleaseDateDescription(movieItem.releaseDate)}}</div>
   </div>
@@ -21,10 +19,10 @@ import helpers from "../helpers";
 
 export default {
   props: ["movieItem", "genreList"],
-  data(){
+  data() {
     return {
       helpers
-    }
+    };
   },
   methods: {
     showGenre() {
@@ -38,10 +36,36 @@ export default {
     getGenre(id) {
       return (this.genreList || []).find(item => item.id == id) || {};
     },
-    
-    onClickMovie(){
-        this.$emit('click', this.movieItem);
+    getGenreDescription(){
+var genreNameList = this.movieItem.genreIds.map(genreId => this.getGenre(genreId).name);
+var description = genreNameList.join(", ");
+return description;
+    },
+
+    onClickMovie() {
+      this.$emit("click", this.movieItem);
     }
   }
 };
 </script>
+
+<style scoped>
+
+.movie-poster {
+  width: 161px;
+  height: 242px;
+  background-position: center center;
+  background-size: cover;
+  box-shadow: 0px 8px 24px rgba(0,0,0,0.618033);
+  cursor:pointer;
+}
+
+.genre{
+  opacity: 0.618033;
+  font-size:0.8rem;
+}
+
+.title{
+  font-size:0.93rem;
+}
+</style>
