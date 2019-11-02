@@ -2,13 +2,15 @@
   <div>
     <h1>Movie List</h1>
 
+    <search-bar @change="onChangeSearch"></search-bar>
+
     <div v-if="loading" class="text-center">
       <h5>Loading...</h5>
     </div>
 
     <div v-if="!loading">
       <div v-for="movieItem in paginatedMovieList.results" v-bind:key="'movieItem_'+movieItem.id">
-          <div>{{movieItem.title}}</div>
+        <div>{{movieItem.title}}</div>
       </div>
     </div>
   </div>
@@ -20,7 +22,12 @@ import Swal from "sweetalert2";
 
 import config from "../config";
 
+import SearchBar from "./SearchBar";
+
 export default {
+  components: {
+    SearchBar
+  },
   data() {
     return {
       loading: false,
@@ -29,20 +36,19 @@ export default {
   },
 
   created() {
-      this.populateMovies();
+    this.populateMovies();
   },
 
   methods: {
-    async populateMovies() {
+    async populateMovies(query) {
       try {
         this.loading = true;
-        
-        var response = await axios.get(`${config.API_URL}/movie`);
+
+        var response = await axios.get(`${config.API_URL}/movie?query=${query || ""}`);
 
         this.paginatedMovieList = (response && response.data) || {};
 
         this.loading = false;
-
       } catch (e) {
         console.error(e);
 
@@ -55,6 +61,9 @@ export default {
             "There was an error getting the movies. Try again later or contact the support."
         });
       }
+    },
+    onChangeSearch(query) {
+      this.populateMovies(query);
     }
   }
 };
