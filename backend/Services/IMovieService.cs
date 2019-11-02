@@ -8,8 +8,8 @@ namespace ArcTouch.UpcomingMovies.Api.Services
 {
     public interface IMovieService
     {
-        Task<PaginatedMovieList> GetUpcomingMovies();
-        Task<PaginatedMovieList> SearchMovies(string query);
+        Task<PaginatedMovieList> GetUpcomingMovies(int? page = null);
+        Task<PaginatedMovieList> SearchMovies(string query, int? page = null);
         Task<Movie> GetMovieDetails(int id);
     }
 }

@@ -17,11 +17,11 @@ namespace ArcTouch.UpcomingMovies.Api.Services
         {
             this.apiKey = apiKey;
         }
-        public async Task<PaginatedMovieList> GetUpcomingMovies()
+        public async Task<PaginatedMovieList> GetUpcomingMovies(int? page = null)
         {
             using (HttpClient http = new HttpClient())
             {
-                var response = await http.GetAsync($"{API_URL}/movie/upcoming?api_key={apiKey}");
+                var response = await http.GetAsync($"{API_URL}/movie/upcoming?api_key={apiKey}&page={page.GetValueOrDefault(1)}");
                 var responseContent = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
@@ -38,11 +38,11 @@ namespace ArcTouch.UpcomingMovies.Api.Services
             }
         }
 
-        public async Task<PaginatedMovieList> SearchMovies(string query)
+        public async Task<PaginatedMovieList> SearchMovies(string query, int? page = null)
         {
             using (HttpClient http = new HttpClient())
             {
-                var response = await http.GetAsync($"{API_URL}/search/movie?api_key={apiKey}&query={query}");
+                var response = await http.GetAsync($"{API_URL}/search/movie?api_key={apiKey}&query={query}&page={page.GetValueOrDefault(1)}");
                 var responseContent = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
