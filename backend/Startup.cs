@@ -34,7 +34,12 @@ namespace ArcTouch.UpcomingMovies.Api
 
             services.AddSingleton<IMovieService>(new TheMovieDbService(
                Configuration.GetSection("TheMovieDb").GetValue<string>("ApiKey")
-           ));
+            ));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +49,8 @@ namespace ArcTouch.UpcomingMovies.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("MyPolicy");
 
             app.UseMvc();
 
