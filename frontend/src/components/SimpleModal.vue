@@ -6,7 +6,7 @@
   >
     <!-- Modal container -->
     <div
-      style="width:100%; max-width: 600px; min-height: 100px; background-color:white;margin: 60px auto 0px; padding:12px; position: relative;"
+      style="width:100%; max-width: 600px; min-height: 100px; background-color:white;margin: 60px auto 0px; position: relative;"
     >
       <!-- Modal close button -->
       <div
@@ -15,7 +15,9 @@
       >&times;</div>
 
       <!-- Modal content Slot -->
-      <slot :params="params"></slot>
+      <div style="padding: 12px;">
+        <slot></slot>
+      </div>
     </div>
   </div>
 </template>

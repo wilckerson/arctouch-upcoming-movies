@@ -46,7 +46,6 @@ export default {
     movieId: {
       immediate: true,
       handler(newVal, oldVal) {
-        console.log("movieId 2", newVal);
         this.populateDetails();
       }
     }

@@ -57,12 +57,12 @@ export default {
   },
 
   async created() {
-     await this.populateGenreList();
+    await this.populateGenreList();
     this.populateMovies();
   },
 
   methods: {
-      async populateGenreList() {
+    async populateGenreList() {
       try {
         this.loading = true;
 
@@ -89,7 +89,8 @@ export default {
         this.loading = true;
 
         var response = await axios.get(
-          `${config.API_URL}/movie?query=${this.query || ""}&page=${this.page || ""}`
+          `${config.API_URL}/movie?query=${this.query || ""}&page=${this.page ||
+            ""}`
         );
 
         this.paginatedMovieList = (response && response.data) || {};
@@ -120,8 +121,12 @@ export default {
       this.page = pageNumber;
       this.populateMovies();
     },
-    onSelectMovie(movieItem){
-        this.$emit("selectMovie", movieItem);
+    onSelectMovie(movieItem) {
+      if (this.loading) {
+        return;
+      }
+
+      this.$emit("selectMovie", movieItem);
     }
   }
 };

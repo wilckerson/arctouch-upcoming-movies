@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <input type="text" v-model="query" :placeholder="placeholder || 'Search...'" />
+  <div style="position:relative;">
+    <input type="text" v-model="query" :placeholder="placeholder || 'Search...'" style="width:100%;"/>
+    <div
+        style="position: absolute;right: 3px;top: -3px;font-size: 1.5rem;cursor: pointer;color: #aaa;"
+        @click="onClearQuery"
+      >&times;</div>
   </div>
 </template>
 
@@ -22,6 +26,11 @@ export default {
           this.$emit("change", newValue);
         }, this.debounceDelay);
       }
+    }
+  },
+  methods:{
+    onClearQuery(){
+      this.query = "";
     }
   }
 };
