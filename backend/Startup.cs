@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ArcTouch.UpcomingMovies.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,8 +29,19 @@ namespace ArcTouch.UpcomingMovies.Api
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp";
+                configuration.RootPath = "wwwroot";
             });
+
+            services.AddSingleton<IMovieService>(new TheMovieDbService(
+               Configuration.GetSection("TheMovieDb").GetValue<string>("ApiKey")
+            ));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyPolicy", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
+
+            services.AddMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,14 +52,17 @@ namespace ArcTouch.UpcomingMovies.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("MyPolicy");
+
             app.UseMvc();
 
             app.UseSpaStaticFiles();
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = "wwwroot";
             });
+
         }
     }
 }
