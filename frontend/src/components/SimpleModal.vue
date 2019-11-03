@@ -68,6 +68,10 @@ export default {
   overflow-y: auto;
 }
 
+.modal-dialog{
+  margin-top: 1.5rem;
+}
+
 @media (max-width: 576px) {
   .hide-button {
     right: -6px;

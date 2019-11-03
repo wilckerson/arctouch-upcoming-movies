@@ -1,7 +1,6 @@
 <template>
   <div id="app ">
     <div class="container pb-5">
-
       <header class="text-center py-4">
         <img src="/img/logo_normal_white.png" width="160" alt="archtouch logo" />
         <h2 class="main-title ml-3 mr-2 d-none d-sm-inline-block">|</h2>
@@ -10,7 +9,7 @@
 
       <movie-list @selectMovie="onSelectMovie" :genre-list="genreList"></movie-list>
     </div>
-    
+
     <simple-modal :show="showModalDetails" @hide="onHideModalDetails" content-padding="0">
       <movie-details :movie-item="selectedMovieItem" :genre-list="genreList"></movie-details>
     </simple-modal>
@@ -43,7 +42,7 @@ export default {
       genreList: []
     };
   },
-  created(){
+  created() {
     this.populateGenreList();
   },
   methods: {
@@ -57,10 +56,8 @@ export default {
     },
     async populateGenreList() {
       try {
-        
         var response = await axios.get(`${config.API_URL}/movie/genres`);
         this.genreList = (response && response.data) || [];
-        
       } catch (e) {
         console.error(e);
 
@@ -71,12 +68,18 @@ export default {
             "There was an error getting the genre list. Try again later or contact the support."
         });
       }
-    },
+    }
   }
 };
 </script>
 
 <style>
+html,
+body {
+  height: 100%;
+  min-height: 100%;
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -90,9 +93,9 @@ body {
   background-attachment: fixed;
 }
 
-.modal-content{
-   background: rgb(56, 74, 85) !important;
-   border:none;
+.modal-content {
+  background: rgb(56, 74, 85) !important;
+  border: none;
 }
 
 .main-title {
@@ -101,21 +104,21 @@ body {
   vertical-align: middle;
 }
 
-.page-item a{
+.page-item a {
   font-weight: bold;
-    color: white;
-    padding: 0px 8px;
-    outline: none;
+  color: white;
+  padding: 0px 8px;
+  outline: none;
 }
 
-.page-item.active{
-  
+.page-item.active {
   border: 1px solid white;
   border-radius: 6px;
 }
 
-
 @media (min-width: 992px) {
-  .col-lg-1-5 { max-width: 20%; }  
+  .col-lg-1-5 {
+    max-width: 20%;
+  }
 }
 </style>
