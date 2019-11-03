@@ -1,41 +1,77 @@
 <template>
-  <div style="min-height:800px;">
-    <div
-      class="movie-backdrop"
-      :style="'background-image: url('+helpers.getImagePathW500(movieItem.backdropPath)+')'"
-    >
+  <div>
+    <div class="movie-backdrop-container">
+      <div
+        class="movie-backdrop"
+        :style="'background-image: url('+helpers.getImagePathW1280(movieItem.backdropPath)+')'"
+      ></div>
       <div class="movie-backdrop-shadow"></div>
-      <div class="container-fluid">
-        <div class="row movie-info-container">
-          <div class="col-4">
-            <div
-              class="movie-poster mx-auto"
-              :style="'background-image: url('+helpers.getImagePathW500(movieItem.posterPath)+')'"
-            ></div>
-          </div>
-          <div class="col-8">
-            <h1>{{movieItem.title}}</h1>
-            <div v-if="movieItem.genreIds">
-              <div
-                class="movie-genre"
-              >{{helpers.getGenreDescription(genreList, movieItem.genreIds)}}</div>
-            </div>
+    </div>
 
-            <div v-if="movieItem.releaseDate" class="movie-release-date mt-1">
-              <img src="/img/calendar-icon.svg" alt="Release date icon" width="20" class="mr-1" />
-              <span>Release date: {{helpers.getReleaseDateDescription(movieItem.releaseDate)}}</span>
-            </div>
+    <div class="container-fluid movie-info-container">
+      <div class="row">
+        <div class="col-4">
+          <div
+            class="movie-poster mx-auto"
+            :style="'background-image: url('+helpers.getImagePathW200(movieItem.posterPath)+')'"
+          ></div>
 
-            <h6 class="mt-4">Overview</h6>
-            <div>{{movieItem.overview || 'No overview available.'}}</div>
-          </div>
+          <a
+            v-if="movieDetails.trailerUrl"
+            :href="movieDetails.trailerUrl"
+            class="btn btn-danger btn-block mt-2"
+            target="_blank"
+          >
+            <img src="/img/play-icon.svg" alt="Play icon" width="20" class="mr-1" />
+            <span>Play trailer</span>
+          </a>
         </div>
-
-        <div class="movie-info-details">
-          <div v-if="loading">
-            <h5>Getting movie details...</h5>
+        <div class="col-8">
+          <h1>{{movieItem.title}}</h1>
+          <div v-if="movieItem.genreIds">
+            <div class="movie-genre">{{helpers.getGenreDescription(genreList, movieItem.genreIds)}}</div>
           </div>
-          <div v-if="!loading">{{movieDetails}}</div>
+
+          <div v-if="movieItem.releaseDate" class="movie-release-date mt-1">
+            <img src="/img/calendar-icon.svg" alt="Release date icon" width="20" class="mr-1" />
+            <span>Release date: {{helpers.getReleaseDateDescription(movieItem.releaseDate)}}</span>
+          </div>
+          <div v-if="movieDetails.runtime" class="mt-2">
+            <img src="/img/time-icon.svg" alt="Runtime icon" width="20" class="mr-1" />
+            <span>Runtime: {{helpers.getRuntimeDescription(movieDetails.runtime)}}</span>
+          </div>
+
+          <h6 class="mt-4">Overview</h6>
+          <div class="movie-overview">{{movieItem.overview || 'No overview available.'}}</div>
+        </div>
+      </div>
+
+      <div class="movie-info-details pb-5">
+        <div v-if="loading" class="text-center p-5">
+          <h5>Getting movie details...</h5>
+        </div>
+        <div v-if="!loading">
+          <div v-if="movieDetails.castList" class="mt-4">
+            <h5>Top Billed Cast</h5>
+
+            <div class="row mt-3">
+              <div
+                v-for="(cast,castIdx) in movieDetails.castList.slice(0, 5)"
+                :key="'cast_'+castIdx"
+                class="col-6 col-md-4 col-lg-1-5 mb-3"
+              >
+                <div
+                  class="cast-profile"
+                  :style="'background-image: url('+helpers.getImagePathW500(cast.profilePath)+')'"
+                ></div>
+                <div class="mt-2">
+                  <strong>{{cast.name}}</strong>
+                </div>
+                <small>{{cast.character}}</small>
+              </div>
+            </div>
+          </div>
+         
         </div>
       </div>
     </div>
@@ -99,6 +135,9 @@ export default {
 </script>
 
 <style scoped>
+.movie-backdrop-container {
+  position: relative;
+}
 .movie-backdrop {
   width: 100%;
   height: 306px;
@@ -112,7 +151,7 @@ export default {
 
 .movie-backdrop-shadow {
   width: 100%;
-  height: 189px;
+  height: 62%;
   position: absolute;
   left: 0;
   bottom: 0;
@@ -124,17 +163,31 @@ export default {
 }
 
 .movie-poster {
-  width: 242px;
-  height: 363px;
+  /* max-width: 242px;
+  height: 363px; */
+  max-width: 161px;
+  height: 242px;
   background-position: center center;
   background-size: cover;
 }
 
 .movie-info-container {
-  padding-top: 232px;
+  margin-top: -74px;
 }
 
 .movie-release-date * {
   vertical-align: middle;
+}
+
+.cast-profile {
+  width: 120px;
+  height: 160px;
+  background-position: center center;
+  background-size: cover;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.618033);
+}
+
+.movie-overview {
+  font-size: 0.93rem;
 }
 </style>

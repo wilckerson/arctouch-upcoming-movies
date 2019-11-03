@@ -25,7 +25,7 @@
         <div
           v-for="movieItem in paginatedMovieList.results"
           v-bind:key="'movieItem_'+movieItem.id"
-          class="col movie-item"
+          class="col-6 col-sm-4 col-md-3 col-lg-1-5 movie-item"
         >
           <movie-list-item :movie-item="movieItem" :genre-list="genreList" @click="onSelectMovie"></movie-list-item>
         </div>
@@ -149,4 +149,6 @@ export default {
 .movie-item {
   margin-bottom: 64px;
 }
+
+
 </style>

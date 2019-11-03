@@ -101,8 +101,6 @@ body {
   vertical-align: middle;
 }
 
-
-
 .page-item a{
   font-weight: bold;
     color: white;
@@ -110,10 +108,14 @@ body {
     outline: none;
 }
 
-
 .page-item.active{
   
   border: 1px solid white;
   border-radius: 6px;
+}
+
+
+@media (min-width: 992px) {
+  .col-lg-1-5 { max-width: 20%; }  
 }
 </style>

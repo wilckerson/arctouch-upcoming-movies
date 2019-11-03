@@ -1,6 +1,6 @@
 <template>
   <div v-if="show">
-    <div class="modal-backdrop show"></div>
+    <div class="modal-backdrop show" ></div>
     <div class="modal d-block" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -45,9 +45,23 @@
 
 export default {
   props: ["show", "params", "contentPadding", "staticModal"],
+  watch: {
+    show: function(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.bootstrapModalFix(newVal);
+      }
+    }
+  },
   methods: {
     onHideModal() {
       this.$emit("hide");
+    },
+    bootstrapModalFix(add) {
+      if (add) {
+        window.document.body.classList.add("modal-open");
+      } else {
+        window.document.body.classList.remove("modal-open");
+      }
     }
   }
 };
@@ -72,5 +86,10 @@ export default {
   display: inline-block;
   line-height: 26px;
   vertical-align: top;
+}
+
+.modal {
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 </style>

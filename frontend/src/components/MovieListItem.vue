@@ -38,7 +38,7 @@ export default {
 <style scoped>
 
 .movie-poster {
-  width: 161px;
+  max-width: 161px;
   height: 242px;
   background-position: center center;
   background-size: cover;

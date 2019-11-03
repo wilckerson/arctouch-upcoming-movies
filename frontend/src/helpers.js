@@ -5,6 +5,28 @@ export default {
         return moment(releaseDate).format("MMMM D, YYYY");
     },
 
+    getRuntimeDescription(runtime){
+        if(!runtime){ return;}
+        var timeInMinutes = parseInt(runtime);
+
+        var h = 0;
+        var m = 0;
+        while(timeInMinutes >= 60){
+            timeInMinutes -= 60;
+            h++;
+        }
+        m = timeInMinutes;
+
+        var description = "";
+        if(h > 0){
+            description += `${h}h `;
+        }
+        if(m > 0){
+            description += `${m}m`;
+        }
+        return description.trim();
+    },
+
     getGenre(genreList, id) {
         return (genreList || []).find(item => item.id == id) || {};
     },
@@ -17,7 +39,7 @@ export default {
 
     getImagePathW200(path) {
         if (!path) {
-            return "/img/empty-poster-200.png";
+            return "/img/empty-img.png";
         }
 
         return `https://image.tmdb.org/t/p/w200${path}`;
@@ -25,9 +47,17 @@ export default {
 
     getImagePathW500(path) {
         if (!path) {
-            return "/img/empty-poster-200.png";
+            return "/img/empty-img.png";
         }
 
         return `https://image.tmdb.org/t/p/w500${path}`;
+    },
+
+    getImagePathW1280(path) {
+        if (!path) {
+            return "/img/empty-img.png";
+        }
+
+        return `https://image.tmdb.org/t/p/w1280${path}`;
     },
 }
