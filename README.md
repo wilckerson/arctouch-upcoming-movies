@@ -1,6 +1,6 @@
 # ArcTouch Upcoming Movies Web App
 
-http://arctouch-upcoming-movies.azurewebsites.net/
+https://arctouch-upcoming-movies.azurewebsites.net/
 
 ## Archtecture Description
 
