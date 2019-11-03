@@ -14,6 +14,7 @@ namespace ArcTouch.UpcomingMovies.Api.Models
         public IEnumerable<int> GenreIds { get; set; }
         public IEnumerable<string> GenreNames { get; set; }
         public string PosterPath { get; set; }
+        public string BackdropPath { get; set; }
 
         /*
          * "popularity": 242.487,

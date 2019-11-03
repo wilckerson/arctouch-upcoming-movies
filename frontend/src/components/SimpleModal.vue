@@ -1,12 +1,33 @@
 <template>
-  <!-- Modal background -->
+  <div v-if="show">
+    <div class="modal-backdrop show"></div>
+    <div class="modal d-block" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <!-- Modal content Slot -->
+          <slot></slot>
+
+          <!-- Modal hide button -->
+          <div v-if="!staticModal" class="hide-button" @click="onHideModal">
+            <div class="hide-button-icon">&times;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+/*
+<!-- Modal background -->
   <div
     v-if="show"
     style="width:100%; height:100%; background-color: rgba(0,0,0,0.5); position: fixed; top: 0; left:0;"
   >
     <!-- Modal container -->
     <div
-      style="width:100%; max-width: 600px; min-height: 100px; background-color:white;margin: 60px auto 0px; position: relative; color:black;"
+      class="simple-modal-container"
+      style="width:100%; max-width: 900px; min-height: 100px; background-color:white;margin: 60px auto 0px; position: relative;"
     >
       <!-- Modal close button -->
       <div
@@ -15,16 +36,15 @@
       >&times;</div>
 
       <!-- Modal content Slot -->
-      <div style="padding: 12px;">
+      <div :style="'padding: '+(contentPadding || 12)+'px;'">
         <slot></slot>
       </div>
     </div>
   </div>
-</template>
+  */
 
-<script>
 export default {
-  props: ["show", "params"],
+  props: ["show", "params", "contentPadding", "staticModal"],
   methods: {
     onHideModal() {
       this.$emit("hide");
@@ -32,3 +52,25 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.hide-button {
+  position: absolute;
+  right: -16px;
+  top: -16px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  background-color: rgb(56, 74, 85);
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  border-radius: 16px;
+  box-shadow: 0px 0px 3px #000;
+}
+
+.hide-button-icon {
+  display: inline-block;
+  line-height: 26px;
+  vertical-align: top;
+}
+</style>

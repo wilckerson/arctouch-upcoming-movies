@@ -5,12 +5,11 @@
       class="movie-poster"
       :style="'background-image: url('+helpers.getImagePathW200(movieItem.posterPath)+')'"
     alt="Movie poster"></div>
-    <div class="mt-3 title">{{movieItem.title}}</div>
-    <div v-if="showGenre()">
-      <div class="genre">{{getGenreDescription()}}</div>
-      
+    <div class="mt-3 movie-title">{{movieItem.title}}</div>
+    <div v-if="movieItem.genreIds">
+      <div class="movie-genre">{{helpers.getGenreDescription(genreList, movieItem.genreIds)}}</div>      
     </div>
-    <div v-if="movieItem.releaseDate" class="release-date">
+    <div v-if="movieItem.releaseDate" class="movie-release-date">
       <img src="/img/calendar-icon.svg" alt="Release date icon" width="16" class="mr-1"/>
       <span>{{helpers.getReleaseDateDescription(movieItem.releaseDate)}}</span>
       </div>
@@ -28,23 +27,7 @@ export default {
     };
   },
   methods: {
-    showGenre() {
-      return (
-        this.movieItem.genreIds &&
-        this.movieItem.genreIds.length &&
-        this.genreList &&
-        this.genreList.length
-      );
-    },
-    getGenre(id) {
-      return (this.genreList || []).find(item => item.id == id) || {};
-    },
-    getGenreDescription(){
-var genreNameList = this.movieItem.genreIds.map(genreId => this.getGenre(genreId).name);
-var description = genreNameList.join(", ");
-return description;
-    },
-
+    
     onClickMovie() {
       this.$emit("click", this.movieItem);
     }
@@ -63,21 +46,21 @@ return description;
   cursor:pointer;
 }
 
-.genre{
+.movie-genre{
   opacity: 0.618033;
   font-size:0.8rem;
 }
 
-.title{
+.movie-title{
   font-size:0.93rem;
 }
 
-.release-date{
+.movie-release-date{
   opacity: 0.618033;
   font-size:0.8rem;
 }
 
-.release-date *{
+.movie-release-date *{
   vertical-align: middle;
 }
 </style>

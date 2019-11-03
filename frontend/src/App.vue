@@ -1,25 +1,30 @@
 <template>
   <div id="app ">
     <div class="container pb-5">
+
       <header class="text-center py-4">
         <img src="/img/logo_normal_white.png" width="160" alt="archtouch logo" />
         <h2 class="main-title ml-3 mr-2 d-none d-sm-inline-block">|</h2>
         <h2 class="main-title d-sm-inline-block">Upcoming Movies</h2>
       </header>
 
-
-      <movie-list @selectMovie="onSelectMovie"></movie-list>
-
-
+      <movie-list @selectMovie="onSelectMovie" :genre-list="genreList"></movie-list>
     </div>
     
-    <simple-modal :show="showModalDetails" @hide="onHideModalDetails">
-      <movie-details :movie-id="selectedMovieId"></movie-details>
+    <simple-modal :show="showModalDetails" @hide="onHideModalDetails" content-padding="0">
+      <movie-details :movie-item="selectedMovieItem" :genre-list="genreList"></movie-details>
     </simple-modal>
   </div>
 </template>
 
 <script>
+//External packages
+import axios from "axios";
+import Swal from "sweetalert2";
+
+//General references
+import config from "./config";
+
 //Components
 import MovieList from "./components/MovieList.vue";
 import SimpleModal from "./components/SimpleModal.vue";
@@ -34,18 +39,39 @@ export default {
   data() {
     return {
       showModalDetails: false,
-      selectedMovieId: undefined
+      selectedMovieItem: undefined,
+      genreList: []
     };
+  },
+  created(){
+    this.populateGenreList();
   },
   methods: {
     onHideModalDetails() {
       this.showModalDetails = false;
-      this.selectedMovieId = undefined;
+      this.selectedMovieItem = undefined;
     },
     onSelectMovie(movieItem) {
       this.showModalDetails = true;
-      this.selectedMovieId = movieItem.id;
-    }
+      this.selectedMovieItem = movieItem;
+    },
+    async populateGenreList() {
+      try {
+        
+        var response = await axios.get(`${config.API_URL}/movie/genres`);
+        this.genreList = (response && response.data) || [];
+        
+      } catch (e) {
+        console.error(e);
+
+        Swal.fire({
+          type: "error",
+          title: "Something went wrong",
+          text:
+            "There was an error getting the genre list. Try again later or contact the support."
+        });
+      }
+    },
   }
 };
 </script>
@@ -62,6 +88,11 @@ body {
     rgba(30, 40, 48, 1) 100%
   );
   background-attachment: fixed;
+}
+
+.modal-content{
+   background: rgb(56, 74, 85) !important;
+   border:none;
 }
 
 .main-title {

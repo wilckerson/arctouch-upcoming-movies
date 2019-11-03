@@ -1,7 +1,5 @@
 <template>
   <div>
-    
-
     <!-- Search bar -->
     <div class="searchbar-container pb-3">
       <search-bar @change="onChangeSearch" placeholder="Search for a movie..."></search-bar>
@@ -35,8 +33,8 @@
     </div>
 
     <!-- Pagination -->
-   
-<paginate
+
+    <paginate
       :click-handler="onChangePage"
       :page-count="paginatedMovieList.totalPages || 0"
       :hide-prev-next="true"
@@ -47,7 +45,6 @@
       page-class="page-item"
       container-class="pagination justify-content-center"
     ></paginate>
-   
 
     <!-- <div>
       <template v-for="(pageNumber,idx) in paginatedMovieList.totalPages">
@@ -59,7 +56,7 @@
         >{{pageNumber}}</button>
         <span v-else v-bind:key="'page'+idx" style="padding:4px 8px;">{{pageNumber}}</span>
       </template>
-    </div> -->
+    </div>-->
   </div>
 </template>
 
@@ -76,6 +73,7 @@ import MovieListItem from "./MovieListItem";
 import config from "../config";
 
 export default {
+  props: ["genreList"],
   components: {
     SearchBar,
     MovieListItem
@@ -85,39 +83,15 @@ export default {
       loading: false,
       query: "",
       page: 1,
-      paginatedMovieList: { totalPages: 0},
-      genreList: []
+      paginatedMovieList: { totalPages: 0 }
     };
   },
 
   async created() {
-    await this.populateGenreList();
     this.populateMovies();
   },
 
   methods: {
-    async populateGenreList() {
-      try {
-        this.loading = true;
-
-        var response = await axios.get(`${config.API_URL}/movie/genres`);
-
-        this.genreList = (response && response.data) || [];
-
-        this.loading = false;
-      } catch (e) {
-        console.error(e);
-
-        this.loading = false;
-
-        Swal.fire({
-          type: "error",
-          title: "Something went wrong",
-          text:
-            "There was an error getting the genre list. Try again later or contact the support."
-        });
-      }
-    },
     async populateMovies() {
       try {
         this.loading = true;
