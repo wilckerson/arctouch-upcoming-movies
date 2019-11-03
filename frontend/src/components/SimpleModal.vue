@@ -1,6 +1,6 @@
 <template>
   <div v-if="show">
-    <div class="modal-backdrop show" ></div>
+    <div class="modal-backdrop show"></div>
     <div class="modal d-block" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -70,8 +70,8 @@ export default {
 <style scoped>
 .hide-button {
   position: absolute;
-  right: -16px;
-  top: -16px;
+  right: -12px;
+  top: -12px;
   font-size: 1.5rem;
   cursor: pointer;
   background-color: rgb(56, 74, 85);
@@ -91,5 +91,12 @@ export default {
 .modal {
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+@media (max-width: 576px) {
+  .hide-button {
+    right: -6px;
+    top: -6px;
+  }
 }
 </style>

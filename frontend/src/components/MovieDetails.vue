@@ -10,7 +10,7 @@
 
     <div class="container-fluid movie-info-container">
       <div class="row">
-        <div class="col-4">
+        <div class="col-sm-4 order-last order-sm-first">
           <div
             class="movie-poster mx-auto"
             :style="'background-image: url('+helpers.getImagePathW200(movieItem.posterPath)+')'"
@@ -19,26 +19,34 @@
           <a
             v-if="movieDetails.trailerUrl"
             :href="movieDetails.trailerUrl"
-            class="btn btn-danger btn-block mt-2"
+            class="btn btn-danger btn-block mt-4"
             target="_blank"
           >
             <img src="/img/play-icon.svg" alt="Play icon" width="20" class="mr-1" />
             <span>Play trailer</span>
           </a>
         </div>
-        <div class="col-8">
-          <h1>{{movieItem.title}}</h1>
+        <div class="col-sm-8 mb-3">
+          <h1 class="movie-title">{{movieItem.title}}</h1>
           <div v-if="movieItem.genreIds">
             <div class="movie-genre">{{helpers.getGenreDescription(genreList, movieItem.genreIds)}}</div>
           </div>
 
-          <div v-if="movieItem.releaseDate" class="movie-release-date mt-1">
-            <img src="/img/calendar-icon.svg" alt="Release date icon" width="20" class="mr-1" />
-            <span>Release date: {{helpers.getReleaseDateDescription(movieItem.releaseDate)}}</span>
-          </div>
-          <div v-if="movieDetails.runtime" class="mt-2">
-            <img src="/img/time-icon.svg" alt="Runtime icon" width="20" class="mr-1" />
-            <span>Runtime: {{helpers.getRuntimeDescription(movieDetails.runtime)}}</span>
+          <div class="row">
+            <div class="col-8">
+              <div v-if="movieItem.releaseDate" class="movie-release-date mt-1">
+                <img src="/img/calendar-icon.svg" alt="Release date icon" width="20" class="mr-1" />
+                <span>Release date: {{helpers.getReleaseDateDescription(movieItem.releaseDate)}}</span>
+              </div>
+              <div v-if="movieDetails.runtime" class="mt-2">
+                <img src="/img/time-icon.svg" alt="Runtime icon" width="20" class="mr-1" />
+                <span>Runtime: {{helpers.getRuntimeDescription(movieDetails.runtime)}}</span>
+              </div>
+            </div>
+            <div class="col-4 text-center">
+              <movie-score :score="movieItem.userScore" :big="true" alt="User score" />
+              <small>User Score</small>
+            </div>
           </div>
 
           <h6 class="mt-4">Overview</h6>
@@ -71,7 +79,6 @@
               </div>
             </div>
           </div>
-         
         </div>
       </div>
     </div>
@@ -87,8 +94,14 @@ import Swal from "sweetalert2";
 import config from "../config";
 import helpers from "../helpers";
 
+//Components
+import MovieScore from "./MovieScore";
+
 export default {
   props: ["movieItem", "genreList"],
+  components: {
+    MovieScore
+  },
   data() {
     return {
       helpers,
@@ -169,6 +182,7 @@ export default {
   height: 242px;
   background-position: center center;
   background-size: cover;
+  position: relative;
 }
 
 .movie-info-container {
@@ -189,5 +203,18 @@ export default {
 
 .movie-overview {
   font-size: 0.93rem;
+}
+
+.movie-score {
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  bottom: -10px;
+}
+
+@media (max-width: 576px) {
+  .movie-title {
+    font-size: 1.5rem;
+  }
 }
 </style>

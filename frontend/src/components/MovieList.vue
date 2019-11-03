@@ -30,33 +30,21 @@
           <movie-list-item :movie-item="movieItem" :genre-list="genreList" @click="onSelectMovie"></movie-list-item>
         </div>
       </div>
+
+      <!-- Pagination -->
+      <paginate
+        v-model="page"
+        :click-handler="onChangePage"
+        :page-count="paginatedMovieList.totalPages || 0"
+        :hide-prev-next="true"
+        prev-text="Previous"
+        next-text="Next"
+        next-class="page-item"
+        prev-class="page-item"
+        page-class="page-item"
+        container-class="pagination justify-content-center"
+      ></paginate>
     </div>
-
-    <!-- Pagination -->
-
-    <paginate
-      :click-handler="onChangePage"
-      :page-count="paginatedMovieList.totalPages || 0"
-      :hide-prev-next="true"
-      prev-text="Previous"
-      next-text="Next"
-      next-class="page-item"
-      prev-class="page-item"
-      page-class="page-item"
-      container-class="pagination justify-content-center"
-    ></paginate>
-
-    <!-- <div>
-      <template v-for="(pageNumber,idx) in paginatedMovieList.totalPages">
-        <button
-          v-if="page != pageNumber"
-          v-bind:key="'page'+idx"
-          style="padding:4px 8px;"
-          @click="onChangePage(pageNumber)"
-        >{{pageNumber}}</button>
-        <span v-else v-bind:key="'page'+idx" style="padding:4px 8px;">{{pageNumber}}</span>
-      </template>
-    </div>-->
   </div>
 </template>
 
@@ -149,6 +137,4 @@ export default {
 .movie-item {
   margin-bottom: 64px;
 }
-
-
 </style>
