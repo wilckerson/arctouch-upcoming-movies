@@ -63,7 +63,7 @@ namespace ArcTouch.UpcomingMovies.Api.Services
         {
             using (HttpClient http = new HttpClient())
             {
-                var response = await http.GetAsync($"{API_URL}/movie/{id}?api_key={apiKey}");
+                var response = await http.GetAsync($"{API_URL}/movie/{id}?api_key={apiKey}&append_to_response=videos,credits");
                 var responseContent = await response.Content.ReadAsStringAsync();
 
                 if (!response.IsSuccessStatusCode)
@@ -138,14 +138,49 @@ namespace ArcTouch.UpcomingMovies.Api.Services
             {
                 movie.GenreIds = jsonItem.Value<JArray>("genre_ids").Values<int>();
             }
-            else if (jsonItem["genres"] != null)
+
+            movie.Runtime = jsonItem.Value<int?>("runtime"); 
+            movie.UserScore = jsonItem.Value<float?>("vote_average");
+
+            if (jsonItem["videos"] != null && jsonItem["videos"]["results"] != null)
             {
-                //On movie details the genre has a different json structure
-                movie.GenreIds = jsonItem.Value<JArray>("genres").Select(item => item.Value<int>("id"));
-                movie.GenreNames = jsonItem.Value<JArray>("genres").Select(item => item.Value<string>("name"));
+                var jsonVideosResults = jsonItem.Value<JToken>("videos").Value<JArray>("results");
+
+                //By now, getting only Youtube trailer
+                var jsonYoutubeTrailer = jsonVideosResults.FirstOrDefault(item => item.Value<string>("type") == "Trailer" && item.Value<string>("site") == "YouTube");
+                if(jsonYoutubeTrailer != null)
+                {
+                    var key = jsonYoutubeTrailer.Value<string>("key");
+                    movie.TrailerUrl = $"https://www.youtube.com/watch?v={key}";
+                }
             }
+               
+            movie.CastList = ParseJsonToCastList(jsonItem);
 
             return movie;
+        }
+
+        private IEnumerable<Cast> ParseJsonToCastList(JToken jsonItem)
+        {
+            List<Cast> castList = null;
+
+            if(jsonItem["credits"] != null && jsonItem["credits"]["cast"] != null)
+            {
+                castList = new List<Cast>();
+
+                var castResults = jsonItem.Value<JToken>("credits").Value<JArray>("cast");
+                foreach (var jsonCastItem in castResults)
+                {
+                    var cast = new Cast();
+                    cast.Name = jsonCastItem.Value<string>("name");
+                    cast.Character = jsonCastItem.Value<string>("character");
+                    cast.ProfilePath = jsonCastItem.Value<string>("profile_path");
+
+                    castList.Add(cast);
+                }
+            }
+            
+            return castList;
         }
 
         private MovieGenre ParseJsonToMovieGenre(JToken jsonItem)
