@@ -3,7 +3,7 @@
 This application uses ASP.NET Core on backend and VueJS on frontend.
 
 ## Running the application
-1) Install dependencies and build the frontend project. This will create the bundle files inside "ClientApp" folder in the backend project.
+1) Install all dependencies and build the frontend project. This will create the bundle files inside "wwwroot" folder on backend project.
 ```
 cd ./frontend
 npm install
@@ -14,3 +14,5 @@ npm run build
 cd ./backend
 dotnet run
 ```
+
+## List of third-party libraries

@@ -32,6 +32,10 @@ export default {
       if (newValue != oldValue) {
         clearTimeout(this.debounceTimerId);
         this.debounceTimerId = setTimeout(() => {
+          
+          //Clear focus (Mobile close keyboard)
+          window.document.body.focus();
+
           this.$emit("change", newValue);
         }, this.debounceDelay);
       }
