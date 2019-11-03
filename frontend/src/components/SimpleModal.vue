@@ -1,20 +1,25 @@
 <template>
+<transition name="fade">
   <div v-if="show">
-    <div class="modal-backdrop show"></div>
-    <div class="modal d-block" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <!-- Modal content Slot -->
-          <slot></slot>
+    <div  class="modal-backdrop fade show"></div>
 
-          <!-- Modal hide button -->
-          <div v-if="!staticModal" class="hide-button" @click="onHideModal">
-            <div class="hide-button-icon">&times;</div>
+    
+      <div  class="modal d-block" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <!-- Modal content Slot -->
+            <slot></slot>
+
+            <!-- Modal hide button -->
+            <div v-if="!staticModal" class="hide-button" @click="onHideModal">
+              <div class="hide-button-icon">&times;</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+   
   </div>
+   </transition>
 </template>
 
 <script>
@@ -98,5 +103,13 @@ export default {
     right: -6px;
     top: -6px;
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active em versões anteriores a 2.1.8 */ {
+  opacity: 0;
 }
 </style>

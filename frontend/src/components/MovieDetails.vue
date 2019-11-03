@@ -38,9 +38,9 @@
                 <img src="/img/calendar-icon.svg" alt="Release date icon" width="20" class="mr-1" />
                 <span>Release date: {{helpers.getReleaseDateDescription(movieItem.releaseDate)}}</span>
               </div>
-              <div v-if="movieDetails.runtime" class="mt-2">
+              <div class="mt-2">
                 <img src="/img/time-icon.svg" alt="Runtime icon" width="20" class="mr-1" />
-                <span>Runtime: {{helpers.getRuntimeDescription(movieDetails.runtime)}}</span>
+                <span>Runtime: {{helpers.getRuntimeDescription(movieDetails.runtime) || " - "}}</span>
               </div>
             </div>
             <div class="col-4 text-center">
@@ -59,7 +59,7 @@
           <h5>Getting movie details...</h5>
         </div>
         <div v-if="!loading">
-          <div v-if="movieDetails.castList" class="mt-4">
+          <div v-if="movieDetails.castList && movieDetails.castList.length > 0" class="mt-4">
             <h5>Top Billed Cast</h5>
 
             <div class="row mt-3">
