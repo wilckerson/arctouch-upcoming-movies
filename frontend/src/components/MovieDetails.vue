@@ -35,10 +35,12 @@
           <div class="row">
             <div class="col-8">
               <div v-if="movieItem.releaseDate" class="movie-release-date mt-1">
+                
                 <img src="/img/calendar-icon.svg" alt="Release date icon" width="20" class="mr-1" />
-                <span>Release date: {{helpers.getReleaseDateDescription(movieItem.releaseDate)}}</span>
+                <span>Release date: </span>
+                <div class="d-inline-block">{{helpers.getReleaseDateDescription(movieItem.releaseDate)}}</div>
               </div>
-              <div class="mt-2">
+              <div class="movie-runtime mt-2 ">
                 <img src="/img/time-icon.svg" alt="Runtime icon" width="20" class="mr-1" />
                 <span>Runtime: {{helpers.getRuntimeDescription(movieDetails.runtime) || " - "}}</span>
               </div>
@@ -189,8 +191,12 @@ export default {
   margin-top: -74px;
 }
 
+.movie-runtime{
+  font-size: 0.93rem;
+}
 .movie-release-date * {
   vertical-align: middle;
+  font-size: 0.93rem;
 }
 
 .cast-profile {

@@ -6,12 +6,12 @@
     </div>
 
     <!-- Loading -->
-    <div v-if="loading" class="text-center mt-5 mb-5">
+    <div v-show="loading" class="text-center mt-5 pb-5">
       <img src="/img/magnify-loading.svg" alt="Loading icon" />
       <div>Searching movies...</div>
     </div>
 
-    <div v-if="!loading" class="mt-5">
+    <div v-if="!loading" class="mt-5 pb-5">
       <!-- Empty state -->
       <div
         v-if="paginatedMovieList && paginatedMovieList.results && paginatedMovieList.results.length == 0"

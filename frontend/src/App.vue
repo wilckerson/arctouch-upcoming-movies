@@ -74,27 +74,27 @@ export default {
 </script>
 
 <style>
-html,
-body {
+html {
+  background-color: #1e2830;
+  background-image: radial-gradient(
+    circle at 70% top,
+    #384a55 0%,
+    #1e2830 80%
+  );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   height: 100%;
-  min-height: 100%;
 }
 
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: white;
-  background: rgb(56, 74, 85);
-  background: radial-gradient(
-    circle at 70% top,
-    rgba(56, 74, 85, 1) 0%,
-    rgba(30, 40, 48, 1) 100%
-  );
-  background-attachment: fixed;
+  background: transparent;
 }
 
 .modal-content {
-  background: rgb(56, 74, 85) !important;
+  background: #384a55 !important;
   border: none;
 }
 

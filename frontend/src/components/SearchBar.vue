@@ -6,6 +6,7 @@
       class="form-control"
       v-model="query"
       :placeholder="placeholder || 'Search...'"
+      ref="input"
     />
     <img
       v-if="query"
@@ -32,9 +33,10 @@ export default {
       if (newValue != oldValue) {
         clearTimeout(this.debounceTimerId);
         this.debounceTimerId = setTimeout(() => {
-          
+
           //Clear focus (Mobile close keyboard)
-          window.document.body.focus();
+          //window.document.body.focus();
+          this.$refs.input.blur();
 
           this.$emit("change", newValue);
         }, this.debounceDelay);
