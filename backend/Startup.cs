@@ -29,7 +29,7 @@ namespace ArcTouch.UpcomingMovies.Api
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp";
+                configuration.RootPath = "wwwroot";
             });
 
             services.AddSingleton<IMovieService>(new TheMovieDbService(
@@ -58,7 +58,7 @@ namespace ArcTouch.UpcomingMovies.Api
 
             app.UseSpa(spa =>
             {
-                spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = "wwwroot";
             });
 
         }
